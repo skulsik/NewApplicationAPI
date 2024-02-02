@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email', 50);
             $table->text('message');
             $table->boolean('status')->default(0);
-            $table->string('comment', 255);
+            $table->string('comment', 255)->nullable();
             $table->integer('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
