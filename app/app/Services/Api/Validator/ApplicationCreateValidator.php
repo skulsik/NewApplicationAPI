@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Validator;
 
 /**
  * Проверка полей заявки с кастомными сообщениями о ошибках
- * @return errors
+ * errors
 */
-class ApplicationApiValidator
+class ApplicationCreateValidator
 {
     /** Формирует правила и сообщения о ошибках */
     public function __construct($request)
