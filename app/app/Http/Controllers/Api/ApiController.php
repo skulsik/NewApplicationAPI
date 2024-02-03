@@ -167,4 +167,21 @@ class ApiController extends Controller
             ]);
         }
     }
+
+    /**
+     * Метод удаления заявки
+     * GET
+     */
+    public function delete_application($id)
+    {
+        /** Получает и удаляет заявку */
+        $application = ApplicationModel::find($id);
+        $application->delete();
+
+        return response()->json([
+            'result' => 'OK',
+            'application_delete' => 'Заявка успешно удалена!',
+            'application' => $application,
+        ]);
+    }
 }
