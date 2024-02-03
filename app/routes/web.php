@@ -15,6 +15,12 @@ Route::post('/api/application/create_application', [App\Http\Controllers\Api\Api
 /** Получение всех заявок */
 Route::get('/api/application/all_applications', [App\Http\Controllers\Api\ApiController::class, 'get_all_applications'])->name('get_all_applications');
 
+/** Получение одной заявки */
+Route::get('/api/application/get_application/{id}', [App\Http\Controllers\Api\ApiController::class, 'get_application'])->name('get_application');
+
+/** Создание заявки */
+Route::patch('/api/application/completion_application/{id}', [App\Http\Controllers\Api\ApiController::class, 'completion_application'])->name('completion_application');
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
