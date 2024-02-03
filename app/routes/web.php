@@ -21,6 +21,9 @@ Route::get('/api/application/get_application/{id}', [App\Http\Controllers\Api\Ap
 /** Создание заявки */
 Route::patch('/api/application/completion_application/{id}', [App\Http\Controllers\Api\ApiController::class, 'completion_application'])->name('completion_application');
 
+/** Создание заявки */
+Route::post('/api/application/send_mail_comment_application/{id}', [App\Http\Controllers\Api\ApiController::class, 'send_mail_comment_application'])->name('send_mail_comment_application');
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes

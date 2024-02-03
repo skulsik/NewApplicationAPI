@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Mail\SendMail;
+use App\Models\ApplicationModel;
 use App\Services\Api\CRUD\ApplicationCRUD;
 use App\Services\Api\Validator\ApplicationCreateValidator;
 use App\Services\Api\Validator\ApplicationUpdateValidator;
@@ -130,6 +131,38 @@ class ApiController extends Controller
             return response()->json([
                 'result' => 'OK',
                 'application_update' => $message,
+                'application' => $application,
+            ]);
+        }
+    }
+
+    /**
+     * Метод отправки сообщения на почту клиента
+     * POST
+     */
+    public function send_mail_comment_application(Request $request, $id)
+    {
+        /** Валидация поля comment */
+        $comment_validator = new ApplicationUpdateValidator($request);
+        $comment_validator->run_validator();
+        $error = $comment_validator->error_validator();
+
+        /** Если есть ошибки валидации, отдает клиенту */
+        if ($error)
+        {
+            return ['result' => 'error', 'errors' => $error];
+        }
+        else
+        {
+            $application = ApplicationModel::find($id);
+
+            /** Отправляет комментарий по заявке на почту клиента */
+            Mail::to($application->email)
+                ->send(new SendMail($application->name, $application->comment, $application->id));
+
+            return response()->json([
+                'result' => 'OK',
+                'application_update' => 'Сообщение успешно отправлено клиенту ('.$application->name.').',
                 'application' => $application,
             ]);
         }
