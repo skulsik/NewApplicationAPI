@@ -4,11 +4,7 @@ namespace App\Services\Api\Validator;
 
 use Illuminate\Support\Facades\Validator;
 
-/**
- * Проверка полей заявки с кастомными сообщениями о ошибках
- * errors
-*/
-class ApplicationCreateValidator
+class ApiRegisterValidator
 {
     /** Формирует правила и сообщения о ошибках */
     public function __construct($request)
@@ -16,28 +12,27 @@ class ApplicationCreateValidator
         $this->request = $request;
         /** Правила проверки */
         $this->rules = array(
-            'name' => "required|string|max:50",
-            'email' => "required|string|max:50|email:strict",
-            'message' => "required|string"
+            'name' => "required",
+            'email' => "required|string|max:50|email:strict|unique:users",
+            'password' => "required|confirmed"
         );
 
         /** Кастомные сообщения */
         $this->messages = [
             'name.required' => 'Поле (name) не должно быть пустым.',
-            'name.string' => 'Поле (name) типа string',
-            'name.max' => 'В поле (name), можно ввести не более 50 символов',
 
             'email.required' => 'Поле (email) не должно быть пустым.',
             'email.string' => 'Поле (email) типа string.',
             'email.max' => 'В поле (email), можно ввести не более 50 символов',
             'email.email' => 'Вы неправильно ввели адрес электронной почты.',
+            'email.unique' => 'Пользователь с таким электронным адресом уже существует.',
 
-            'message.required' => 'Поле (message) не должно быть пустым.',
-            'message.string' => 'Поле (message) типа string.'
+            'password.required' => 'Поле (password) не должно быть пустым.',
+            'password.confirmed' => 'Пароли отличаются.'
         ];
     }
 
-     /** Валидация */
+    /** Валидация */
     public function run_validator()
     {
         $this->validator = Validator::make($this->request->all(), $this->rules, $this->messages);

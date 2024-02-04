@@ -1,10 +1,34 @@
 <?php
 
+use App\Http\Controllers\Api\Auth\LoginController;
+use App\Http\Controllers\Api\Auth\LogoutController;
+use App\Http\Controllers\Api\Auth\ProfileController;
+use App\Http\Controllers\Api\Auth\RefreshTokenController;
+use App\Http\Controllers\Api\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
 
 /**
  * API маршруты
  */
+
+/** Регистрация пользователя */
+Route::post("/api/register", [RegisterController::class, "register"]);
+
+/** Авторизация пользователя */
+Route::post("/api/login", [LoginController::class, "login"]);
+
+Route::group([
+    "middleware" => ["auth:api"]
+], function(){
+    /** Запрос профиля авторизованного пользователя */
+    Route::get("/api/profile", [ProfileController::class, "profile"]);
+
+    /** Обновление токена */
+    Route::get("/api/refresh", [RefreshTokenController::class, "refreshToken"]);
+
+    /** Деавторизация пользователя */
+    Route::get("/api/logout", [LogoutController::class, "logout"]);
+});
 
 /** Получение csrf токена */
 Route::get('/api/token/get_csrf_token', [App\Http\Controllers\Api\GetCsrfTokenController::class, 'get_csrf_token'])->name('get_csrf_token');
@@ -39,9 +63,9 @@ Route::get('/api/application/delete_application/{id}', [App\Http\Controllers\Api
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/api/documentation');
 });
 
-Auth::routes();
+//Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
