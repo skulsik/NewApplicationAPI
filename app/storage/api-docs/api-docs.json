@@ -6,6 +6,59 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/register": {
+            "post": {
+                "summary": "Андпоинт - регистрация пользователя.",
+                "description": "Создает нового пользователя в бд. Возвращает сообщение о ошибке или удачном создании пользователя.",
+                "operationId": "1716c95d7ee32950f11034c5cd88c6aa",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Имя пользователя.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Электронная почта пользователя.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "Пароль.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password_confirmation",
+                        "in": "query",
+                        "description": "Повторите пароль.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Пользователь зарегистрирован."
+                    },
+                    "401": {
+                        "description": "Неверные учетные данные."
+                    }
+                }
+            }
+        },
         "/api/application/completion_application/{id}": {
             "patch": {
                 "summary": "Андпоинт - запись комментария к заявке, отправка сообщения на почту.",
