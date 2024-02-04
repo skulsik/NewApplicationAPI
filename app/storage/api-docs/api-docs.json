@@ -1,0 +1,175 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Конечные точки управления заявками.",
+        "description": "Приветствую Вас в Api приложении, NewApplicationAPI !",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/application/completion_application/{id}": {
+            "patch": {
+                "summary": "Андпоинт - запись комментария к заявке, отправка сообщения на почту.",
+                "description": "Добавляет комментарий к заявке, добавляет статус - завершено, отправляет комментарий на почту создателя заявки. Возвращает ошибки или сообщение о успешном добавлении комментария в заявку и сам объект заявки.",
+                "operationId": "685d82f4d4fe489a927bf20dba7d800b",
+                "parameters": [
+                    {
+                        "name": "comment",
+                        "in": "query",
+                        "description": "Комментарий.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Заявка создана."
+                    },
+                    "401": {
+                        "description": "Неверные учетные данные."
+                    }
+                }
+            }
+        },
+        "/api/application/create_application": {
+            "post": {
+                "summary": "Андпоинт - создания заявки.",
+                "description": "Создает заявку. Возвращает сообщение: о ошибках или успешном создании заявки.",
+                "operationId": "569af5fd4ce72f8e043062caa2b9c8db",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Имя клиента.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Электронная почта клиента.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "message",
+                        "in": "query",
+                        "description": "Сообщение клиента.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Заявка создана."
+                    },
+                    "401": {
+                        "description": "Неверные учетные данные."
+                    }
+                }
+            }
+        },
+        "/api/application/delete_application/{id}": {
+            "get": {
+                "summary": "Андпоинт - удаления заявки.",
+                "description": "Удаляет заявку. Возвращает сообщение о успешном удалении и объект заявки.",
+                "operationId": "94c3cd9f523af4b927ea843d1a5d37ef",
+                "responses": {
+                    "200": {
+                        "description": "Успешно."
+                    },
+                    "500": {
+                        "description": "Что-то пошло не так."
+                    }
+                }
+            }
+        },
+        "/api/application/all_applications": {
+            "get": {
+                "summary": "Андпоинт - получения всех заявок.",
+                "description": "Без использования фильтров, возвращает все заявки (дефолтно сортировка по дате в порядке возрастания). Фильтр: status=false - все незавершенные заявки, status=true - все завершенные заявки, date - обратная сортировка по дате.",
+                "operationId": "c19e7345af332adc95fe0e342912bd9a",
+                "responses": {
+                    "200": {
+                        "description": "Успешно."
+                    },
+                    "500": {
+                        "description": "Что-то пошло не так."
+                    }
+                }
+            }
+        },
+        "/api/application/get_application/{id}": {
+            "get": {
+                "summary": "Андпоинт - получения одной заявки.",
+                "description": "Возвращает заявку по id.",
+                "operationId": "9f00a36c2fa536782093d7267bc2e03e",
+                "responses": {
+                    "200": {
+                        "description": "Успешно."
+                    },
+                    "500": {
+                        "description": "Что-то пошло не так."
+                    }
+                }
+            }
+        },
+        "/api/token/get_csrf_token": {
+            "get": {
+                "summary": "Андпоинт - получения csrf токена.",
+                "description": "Возвращает csrf токен, необходим для создания заявки, заявка создается неавторизованным пользователем",
+                "operationId": "1d4981c2ec8ec72fb880b015af87be09",
+                "responses": {
+                    "200": {
+                        "description": "Успешно."
+                    },
+                    "500": {
+                        "description": "Что-то пошло не так."
+                    }
+                }
+            }
+        },
+        "/api/application/send_mail_comment_application/{id}": {
+            "post": {
+                "summary": "Андпоинт - отправка сообщения на почту.",
+                "description": "Отправляет сообщение на почту клиента.",
+                "operationId": "0c424cfd882044a5fee88bfe2322fb5b",
+                "parameters": [
+                    {
+                        "name": "comment",
+                        "in": "query",
+                        "description": "Комментарий.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Заявка создана."
+                    },
+                    "401": {
+                        "description": "Неверные учетные данные."
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    }
+}
