@@ -1,0 +1,358 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Конечные точки управления заявками.",
+        "description": "Приветствую Вас в Api приложении, NewApplicationAPI !",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/admin/assignment_right": {
+            "post": {
+                "summary": "Андпоинт - присвоение прав зарегистрированному пользователю.",
+                "description": "Присваивает права зарегистрированному пользователю (root, moderator). Возвращает сообщение.",
+                "operationId": "09be7a56a81a5bfc53e893e84afb9a2d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "Индификатор зарегистрированного пользователя.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "role",
+                        "in": "query",
+                        "description": "Право - присвоить пользователю..",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Заявка создана."
+                    },
+                    "401": {
+                        "description": "Неверные учетные данные."
+                    }
+                }
+            }
+        },
+        "/api/admin/get_all_users": {
+            "get": {
+                "summary": "Андпоинт - получения всех пользователей.",
+                "description": "Возврат всех пользователей.",
+                "operationId": "cf7720addbf834caf88db185da5d6377",
+                "responses": {
+                    "200": {
+                        "description": "Успешно."
+                    },
+                    "500": {
+                        "description": "Что-то пошло не так."
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "summary": "Андпоинт - авторизация пользователя.",
+                "description": "Авторизует пользователя. Возвращает сообщение о ошибках или сообщение о том что пользователь авторизован и токен пользователя.",
+                "operationId": "5f90fad45b3bec06f69a5d179ce78a5f",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Электронная почта пользователя.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "Пароль.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Вход совершен."
+                    },
+                    "401": {
+                        "description": "Неверные учетные данные."
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "get": {
+                "summary": "Андпоинт - деавторизация.",
+                "description": "Возвращает сообщение о успешной деавторизации.",
+                "operationId": "7e7c3fa69373f919fd44c2a4f74b8442",
+                "responses": {
+                    "200": {
+                        "description": "Успешно."
+                    },
+                    "500": {
+                        "description": "Что-то пошло не так."
+                    }
+                }
+            }
+        },
+        "/api/profile": {
+            "get": {
+                "summary": "Андпоинт - получение профиля пользователя.",
+                "description": "Возвращает данные профиля пользователя.",
+                "operationId": "8bebfb8436a002761c72a06fe47a50d5",
+                "responses": {
+                    "200": {
+                        "description": "Успешно."
+                    },
+                    "500": {
+                        "description": "Что-то пошло не так."
+                    }
+                }
+            }
+        },
+        "/api/refresh": {
+            "get": {
+                "summary": "Андпоинт - обновление токена.",
+                "description": "Возвращает свеже - сгенерированный токен.",
+                "operationId": "8a5546b289ed9856cf5d67ed7a7d4ccc",
+                "responses": {
+                    "200": {
+                        "description": "Успешно."
+                    },
+                    "500": {
+                        "description": "Что-то пошло не так."
+                    }
+                }
+            }
+        },
+        "/api/register": {
+            "post": {
+                "summary": "Андпоинт - регистрация пользователя.",
+                "description": "Создает нового пользователя в бд. Возвращает сообщение о ошибке или удачном создании пользователя.",
+                "operationId": "1716c95d7ee32950f11034c5cd88c6aa",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Имя пользователя.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Электронная почта пользователя.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "Пароль.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password_confirmation",
+                        "in": "query",
+                        "description": "Повторите пароль.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Пользователь зарегистрирован."
+                    },
+                    "401": {
+                        "description": "Неверные учетные данные."
+                    }
+                }
+            }
+        },
+        "/api/application/completion_application/{id}": {
+            "patch": {
+                "summary": "Андпоинт - запись комментария к заявке, отправка сообщения на почту.",
+                "description": "Добавляет комментарий к заявке, добавляет статус - завершено, отправляет комментарий на почту создателя заявки. Возвращает ошибки или сообщение о успешном добавлении комментария в заявку и сам объект заявки.",
+                "operationId": "685d82f4d4fe489a927bf20dba7d800b",
+                "parameters": [
+                    {
+                        "name": "comment",
+                        "in": "query",
+                        "description": "Комментарий.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Заявка создана."
+                    },
+                    "401": {
+                        "description": "Неверные учетные данные."
+                    }
+                }
+            }
+        },
+        "/api/application/create_application": {
+            "post": {
+                "summary": "Андпоинт - создания заявки.",
+                "description": "Создает заявку. Возвращает сообщение: о ошибках или успешном создании заявки.",
+                "operationId": "569af5fd4ce72f8e043062caa2b9c8db",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Имя клиента.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Электронная почта клиента.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "message",
+                        "in": "query",
+                        "description": "Сообщение клиента.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Заявка создана."
+                    },
+                    "401": {
+                        "description": "Неверные учетные данные."
+                    }
+                }
+            }
+        },
+        "/api/application/delete_application/{id}": {
+            "get": {
+                "summary": "Андпоинт - удаления заявки.",
+                "description": "Удаляет заявку. Возвращает сообщение о успешном удалении и объект заявки.",
+                "operationId": "94c3cd9f523af4b927ea843d1a5d37ef",
+                "responses": {
+                    "200": {
+                        "description": "Успешно."
+                    },
+                    "500": {
+                        "description": "Что-то пошло не так."
+                    }
+                }
+            }
+        },
+        "/api/application/all_applications": {
+            "get": {
+                "summary": "Андпоинт - получения всех заявок.",
+                "description": "Без использования фильтров, возвращает все заявки (дефолтно сортировка по дате в порядке возрастания). Фильтр: status=false - все незавершенные заявки, status=true - все завершенные заявки, date - обратная сортировка по дате.",
+                "operationId": "c19e7345af332adc95fe0e342912bd9a",
+                "responses": {
+                    "200": {
+                        "description": "Успешно."
+                    },
+                    "500": {
+                        "description": "Что-то пошло не так."
+                    }
+                }
+            }
+        },
+        "/api/application/get_application/{id}": {
+            "get": {
+                "summary": "Андпоинт - получения одной заявки.",
+                "description": "Возвращает заявку по id.",
+                "operationId": "9f00a36c2fa536782093d7267bc2e03e",
+                "responses": {
+                    "200": {
+                        "description": "Успешно."
+                    },
+                    "500": {
+                        "description": "Что-то пошло не так."
+                    }
+                }
+            }
+        },
+        "/api/token/get_csrf_token": {
+            "get": {
+                "summary": "Андпоинт - получения csrf токена.",
+                "description": "Возвращает csrf токен, необходим для создания заявки, заявка создается неавторизованным пользователем",
+                "operationId": "1d4981c2ec8ec72fb880b015af87be09",
+                "responses": {
+                    "200": {
+                        "description": "Успешно."
+                    },
+                    "500": {
+                        "description": "Что-то пошло не так."
+                    }
+                }
+            }
+        },
+        "/api/application/send_mail_comment_application/{id}": {
+            "post": {
+                "summary": "Андпоинт - отправка сообщения на почту.",
+                "description": "Отправляет сообщение на почту клиента.",
+                "operationId": "0c424cfd882044a5fee88bfe2322fb5b",
+                "parameters": [
+                    {
+                        "name": "comment",
+                        "in": "query",
+                        "description": "Комментарий.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Заявка создана."
+                    },
+                    "401": {
+                        "description": "Неверные учетные данные."
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    }
+}
