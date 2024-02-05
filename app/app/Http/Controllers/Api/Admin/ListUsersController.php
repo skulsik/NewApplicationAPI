@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
-class GetApplicationController extends Controller
+class ListUsersController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/api/application/get_application/{id}",
-     *     summary="Андпоинт - получения одной заявки.",
-     *     description="Возвращает заявку по id.",
+     *     path="/api/admin/get_all_users",
+     *     summary="Андпоинт - получения всех пользователей.",
+     *     description="Возврат всех пользователей.",
      *     @OA\Response(
      *         response="200",
      *         description="Успешно."
@@ -22,15 +23,15 @@ class GetApplicationController extends Controller
      *     )
      * )
      */
-    public function get_application($id)
+    public function get_all_users()
     {
-        if (auth()->user()->hasRole('root') or auth()->user()->hasRole('moderator'))
+        if (auth()->user()->hasRole('root'))
         {
-            $application = DB::table('application_models')->find($id);
+            $users = User::with('roles')->get();
 
             return response()->json([
                 'result' => 'OK',
-                'application' => $application,
+                'list_users' => $users,
             ]);
         }
         else

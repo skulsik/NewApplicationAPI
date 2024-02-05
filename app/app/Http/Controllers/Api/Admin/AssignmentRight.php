@@ -1,35 +1,30 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Admin;
 
-use App\Services\Api\Validator\ApplicationCreateValidator;
+use App\Http\Controllers\Controller;
+use App\Services\Api\Admin\AddAssignmentRight;
+use App\Services\Api\Validator\AssignmentRightValidator;
 use Illuminate\Http\Request;
 
-class CreateApplicationController extends ApiController
+class AssignmentRight extends Controller
 {
     /**
      * @OA\Post(
-     *     path="/api/application/create_application",
-     *     summary="Андпоинт - создания заявки.",
-     *     description="Создает заявку. Возвращает сообщение: о ошибках или успешном создании заявки.",
+     *     path="/api/admin/assignment_right",
+     *     summary="Андпоинт - присвоение прав зарегистрированному пользователю.",
+     *     description="Присваивает права зарегистрированному пользователю (root, moderator). Возвращает сообщение.",
      *     @OA\Parameter(
-     *         name="name",
+     *         name="id",
      *         in="query",
-     *         description="Имя клиента.",
+     *         description="Индификатор зарегистрированного пользователя.",
      *         required=true,
      *         @OA\Schema(type="string")
      *     ),
      *     @OA\Parameter(
-     *         name="email",
+     *         name="role",
      *         in="query",
-     *         description="Электронная почта клиента.",
-     *         required=true,
-     *         @OA\Schema(type="string")
-     *     ),
-     *     @OA\Parameter(
-     *         name="message",
-     *         in="query",
-     *         description="Сообщение клиента.",
+     *         description="Право - присвоить пользователю..",
      *         required=true,
      *         @OA\Schema(type="string")
      *     ),
@@ -37,12 +32,12 @@ class CreateApplicationController extends ApiController
      *     @OA\Response(response="401", description="Неверные учетные данные.")
      * )
      */
-    public function create_application(Request $request)
+    public function assignment_right(Request $request)
     {
-        if (auth()->user()->hasRole('root') or auth()->user()->hasRole('moderator'))
+        if (auth()->user()->hasRole('root'))
         {
-            /** Валидация полей (name, email, message) */
-            $application_validator = new ApplicationCreateValidator($request);
+            /** Валидация полей (id, role) */
+            $application_validator = new AssignmentRightValidator($request);
             $application_validator->run_validator();
             $error = $application_validator->error_validator();
 
@@ -56,10 +51,10 @@ class CreateApplicationController extends ApiController
                 /** Запись заявки в бд.
                  * Если есть ошибка, отдает ее в ответ.
                  */
-                $message = 'Заявка успешно создана!';
+                $message = 'Права успешно присвоены!';
                 try
                 {
-                    $this->application_crud->create_application($request);
+                    new AddAssignmentRight($request);
                 }
                 catch (\Illuminate\Database\QueryException $e)
                 {
@@ -68,7 +63,7 @@ class CreateApplicationController extends ApiController
 
                 return response()->json([
                     'result' => 'OK',
-                    'application_create' => $message,
+                    'message' => $message,
                 ]);
             }
         }

@@ -6,6 +6,136 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/admin/assignment_right": {
+            "post": {
+                "summary": "Андпоинт - присвоение прав зарегистрированному пользователю.",
+                "description": "Присваивает права зарегистрированному пользователю (root, moderator). Возвращает сообщение.",
+                "operationId": "09be7a56a81a5bfc53e893e84afb9a2d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "Индификатор зарегистрированного пользователя.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "role",
+                        "in": "query",
+                        "description": "Право - присвоить пользователю..",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Заявка создана."
+                    },
+                    "401": {
+                        "description": "Неверные учетные данные."
+                    }
+                }
+            }
+        },
+        "/api/admin/get_all_users": {
+            "get": {
+                "summary": "Андпоинт - получения всех пользователей.",
+                "description": "Возврат всех пользователей.",
+                "operationId": "cf7720addbf834caf88db185da5d6377",
+                "responses": {
+                    "200": {
+                        "description": "Успешно."
+                    },
+                    "500": {
+                        "description": "Что-то пошло не так."
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "summary": "Андпоинт - авторизация пользователя.",
+                "description": "Авторизует пользователя. Возвращает сообщение о ошибках или сообщение о том что пользователь авторизован и токен пользователя.",
+                "operationId": "5f90fad45b3bec06f69a5d179ce78a5f",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Электронная почта пользователя.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "Пароль.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Вход совершен."
+                    },
+                    "401": {
+                        "description": "Неверные учетные данные."
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "get": {
+                "summary": "Андпоинт - деавторизация.",
+                "description": "Возвращает сообщение о успешной деавторизации.",
+                "operationId": "7e7c3fa69373f919fd44c2a4f74b8442",
+                "responses": {
+                    "200": {
+                        "description": "Успешно."
+                    },
+                    "500": {
+                        "description": "Что-то пошло не так."
+                    }
+                }
+            }
+        },
+        "/api/profile": {
+            "get": {
+                "summary": "Андпоинт - получение профиля пользователя.",
+                "description": "Возвращает данные профиля пользователя.",
+                "operationId": "8bebfb8436a002761c72a06fe47a50d5",
+                "responses": {
+                    "200": {
+                        "description": "Успешно."
+                    },
+                    "500": {
+                        "description": "Что-то пошло не так."
+                    }
+                }
+            }
+        },
+        "/api/refresh": {
+            "get": {
+                "summary": "Андпоинт - обновление токена.",
+                "description": "Возвращает свеже - сгенерированный токен.",
+                "operationId": "8a5546b289ed9856cf5d67ed7a7d4ccc",
+                "responses": {
+                    "200": {
+                        "description": "Успешно."
+                    },
+                    "500": {
+                        "description": "Что-то пошло не так."
+                    }
+                }
+            }
+        },
         "/api/register": {
             "post": {
                 "summary": "Андпоинт - регистрация пользователя.",
