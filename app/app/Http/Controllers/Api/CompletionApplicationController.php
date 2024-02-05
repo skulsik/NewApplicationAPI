@@ -43,9 +43,12 @@ class CompletionApplicationController extends ApiController
              * Если есть ошибка, отдает ее в ответ.
              */
             $message = 'Заявка успешно обновлена!';
-            try {
+            try
+            {
                 $application = $this->application_crud->completion_application($request, $id);
-            } catch (\Illuminate\Database\QueryException $e) {
+            }
+            catch (\Illuminate\Database\QueryException $e)
+            {
                 $message = $e->getMessage();
             }
 

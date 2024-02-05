@@ -55,9 +55,12 @@ class CreateApplicationController extends ApiController
              * Если есть ошибка, отдает ее в ответ.
              */
             $message = 'Заявка успешно создана!';
-            try {
+            try
+            {
                 $this->application_crud->create_application($request);
-            } catch (\Illuminate\Database\QueryException $e) {
+            }
+            catch (\Illuminate\Database\QueryException $e)
+            {
                 $message = $e->getMessage();
             }
 
