@@ -29,29 +29,37 @@ class SendMailCommentApplicationController extends Controller
      */
     public function send_mail_comment_application(Request $request, $id)
     {
-        /** Валидация поля comment */
-        $comment_validator = new ApplicationUpdateValidator($request);
-        $comment_validator->run_validator();
-        $error = $comment_validator->error_validator();
-
-        /** Если есть ошибки валидации, отдает клиенту */
-        if ($error)
+        if (auth()->user()->hasRole('root') or auth()->user()->hasRole('moderator'))
         {
-            return ['result' => 'error', 'errors' => $error];
+            /** Валидация поля comment */
+            $comment_validator = new ApplicationUpdateValidator($request);
+            $comment_validator->run_validator();
+            $error = $comment_validator->error_validator();
+
+            /** Если есть ошибки валидации, отдает клиенту */
+            if ($error)
+            {
+                return ['result' => 'error', 'errors' => $error];
+            }
+            else
+            {
+                $application = ApplicationModel::find($id);
+
+                /** Отправляет комментарий по заявке на почту клиента */
+                Mail::to($application->email)
+                    ->send(new SendMail($application->name, $application->comment, $application->id));
+
+                return response()->json([
+                    'result' => 'OK',
+                    'application_update' => 'Сообщение успешно отправлено клиенту ('.$application->name.').',
+                    'application' => $application,
+                ]);
+            }
         }
         else
-        {
-            $application = ApplicationModel::find($id);
-
-            /** Отправляет комментарий по заявке на почту клиента */
-            Mail::to($application->email)
-                ->send(new SendMail($application->name, $application->comment, $application->id));
-
             return response()->json([
                 'result' => 'OK',
-                'application_update' => 'Сообщение успешно отправлено клиенту ('.$application->name.').',
-                'application' => $application,
+                'message' => 'У вас недостаточно прав.',
             ]);
-        }
     }
 }

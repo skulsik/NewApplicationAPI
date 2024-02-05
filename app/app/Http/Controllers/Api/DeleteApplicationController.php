@@ -24,14 +24,22 @@ class DeleteApplicationController extends Controller
      */
     public function delete_application($id)
     {
-        /** Получает и удаляет заявку */
-        $application = ApplicationModel::find($id);
-        $application->delete();
+        if (auth()->user()->hasRole('root') or auth()->user()->hasRole('moderator'))
+        {
+            /** Получает и удаляет заявку */
+            $application = ApplicationModel::find($id);
+            $application->delete();
 
-        return response()->json([
-            'result' => 'OK',
-            'application_delete' => 'Заявка успешно удалена!',
-            'application' => $application,
-        ]);
+            return response()->json([
+                'result' => 'OK',
+                'application_delete' => 'Заявка успешно удалена!',
+                'application' => $application,
+            ]);
+        }
+        else
+            return response()->json([
+                'result' => 'OK',
+                'message' => 'У вас недостаточно прав.',
+            ]);
     }
 }

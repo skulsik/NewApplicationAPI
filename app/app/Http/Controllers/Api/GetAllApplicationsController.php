@@ -21,13 +21,21 @@ class GetAllApplicationsController extends ApiController
      */
     public function get_all_applications()
     {
-        $result = $this->application_crud->read_application();
+        if (auth()->user()->hasRole('root') or auth()->user()->hasRole('moderator'))
+        {
+            $result = $this->application_crud->read_application();
 
-        return response()->json([
-            'result' => 'OK',
-            'filter_status' => $result['status'],
-            'filter_date' => $result['date'],
-            'all_applications' => $result['all_applications'],
-        ]);
+            return response()->json([
+                'result' => 'OK',
+                'filter_status' => $result['status'],
+                'filter_date' => $result['date'],
+                'all_applications' => $result['all_applications'],
+            ]);
+        }
+        else
+            return response()->json([
+                'result' => 'OK',
+                'message' => 'У вас недостаточно прав.',
+            ]);
     }
 }

@@ -27,40 +27,48 @@ class CompletionApplicationController extends ApiController
      */
     public function completion_application(Request $request, $id)
     {
-        /** Валидация поля comment */
-        $comment_validator = new ApplicationUpdateValidator($request);
-        $comment_validator->run_validator();
-        $error = $comment_validator->error_validator();
-
-        /** Если есть ошибки валидации, отдает клиенту */
-        if ($error)
+        if (auth()->user()->hasRole('root') or auth()->user()->hasRole('moderator'))
         {
-            return ['result' => 'error', 'errors' => $error];
+            /** Валидация поля comment */
+            $comment_validator = new ApplicationUpdateValidator($request);
+            $comment_validator->run_validator();
+            $error = $comment_validator->error_validator();
+
+            /** Если есть ошибки валидации, отдает клиенту */
+            if ($error)
+            {
+                return ['result' => 'error', 'errors' => $error];
+            }
+            else
+            {
+                /** Обновление заявки в бд.
+                 * Если есть ошибка, отдает ее в ответ.
+                 */
+                $message = 'Заявка успешно обновлена!';
+                try
+                {
+                    $application = $this->application_crud->completion_application($request, $id);
+                }
+                catch (\Illuminate\Database\QueryException $e)
+                {
+                    $message = $e->getMessage();
+                }
+
+                /** Отправляет комментарий по заявке на почту клиента */
+                Mail::to($application->email)
+                    ->send(new SendMail($application->name, $application->comment, $application->id));
+
+                return response()->json([
+                    'result' => 'OK',
+                    'application_update' => $message,
+                    'application' => $application,
+                ]);
+            }
         }
         else
-        {
-            /** Обновление заявки в бд.
-             * Если есть ошибка, отдает ее в ответ.
-             */
-            $message = 'Заявка успешно обновлена!';
-            try
-            {
-                $application = $this->application_crud->completion_application($request, $id);
-            }
-            catch (\Illuminate\Database\QueryException $e)
-            {
-                $message = $e->getMessage();
-            }
-
-            /** Отправляет комментарий по заявке на почту клиента */
-            Mail::to($application->email)
-                ->send(new SendMail($application->name, $application->comment, $application->id));
-
             return response()->json([
                 'result' => 'OK',
-                'application_update' => $message,
-                'application' => $application,
+                'message' => 'У вас недостаточно прав.',
             ]);
-        }
     }
 }

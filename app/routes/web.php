@@ -49,6 +49,12 @@ Route::group([
 
     /** Удаление заявки */
     Route::get('/api/application/delete_application/{id}', [App\Http\Controllers\Api\DeleteApplicationController::class, 'delete_application']);
+
+    /** Назначение пользователя модератором */
+    Route::post('/api/admin/assignment_right', [App\Http\Controllers\Api\Admin\AssignmentRight::class, 'assignment_right']);
+
+    /** Получение всех пользователей */
+    Route::get('/api/admin/get_all_users', [App\Http\Controllers\Api\Admin\ListUsersController::class, 'get_all_users']);
 });
 
 /*
